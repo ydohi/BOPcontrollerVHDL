@@ -1,0 +1,77 @@
+----------------------------------------------------------------------------------
+--Copyright (C) 2020 by DOHI, Yutaka <dohi@bedesign.jp>
+--
+--Permission to use, copy, modify, and/or distribute this software for any purpose
+--with or without fee is hereby granted.
+--
+--THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+--REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+--FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+--INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+--OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+--TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+--THIS SOFTWARE.
+----------------------------------------------------------------------------------
+--(Zero Clause BSD license)
+--
+-- This is tb_pop.vhd simulation stimulus control file
+-- command format is follows
+--
+-- R param : RESETn control: pram 0:assert, 1:negate
+-- C param : Wait (param) clock cycle
+-- t param : Transmitter Reset control: param 1:assert, 0:negate
+-- r param : Receiver Reset control: param 1:assert, 0:negate
+-- F HH HH HH HH .... HH@param: Normal frame transmit, HH:hex octet data, param:bit count in last octet
+-- F HH HH HH HH .... HH#param: Abort flame transmit, HH:hex octet data, param:bit count in last octet
+-- 		param in F command range is 0 to 7. 7 means full octet, 0 means 1 bit. If greater than 7, it's interpeted as 7.
+-- others : interpreted as comment line
+--		comment allowed after command, but no blank line allowed
+--		At Xilinx Vivado simulator, default path of text file for behavior simulation is
+--		{design_directory}/{design_name}.sim/sim_1/behav/xsim
+R 0		-- RESETn assert
+C 10	-- 10 clock period wait
+R 1		-- RESETn negate
+C 10000	-- 10000 clock period wait
+F 00@0  -- send short frame
+F 00@1  -- send short frame
+F 00@2  -- send short frame
+F 00@3  -- send short frame
+F 00@4  -- send short frame
+F 00@5  -- send short frame
+F 00@6  -- send short frame
+F 00@7  -- send short frame
+F FF@0  -- send short frame
+F FF@1  -- send short frame
+F FF@2  -- send short frame
+F FF@3  -- send short frame
+F FF@4  -- send short frame
+F FF@5  -- send short frame
+F FF@6  -- send short frame
+F FF@7  -- send short frame
+C 10000	-- 10000 clock period wait
+F 55 AA 55 AA 55 AA@0   -- send normal frame
+F 55 AA 55 AA 55 AA@1   -- send normal frame
+F 55 AA 55 AA 55 AA@2   -- send normal frame
+F 55 AA 55 AA 55 AA@3   -- send normal frame
+F 55 AA 55 AA 55 AA@4   -- send normal frame
+F 55 AA 55 AA 55 AA@5   -- send normal frame
+F 55 AA 55 AA 55 AA@6   -- send normal frame
+F 55 AA 55 AA 55 AA@7   -- send normal frame
+C 10000	-- 10000 clock period wait
+F FF FF FF FF FF FF FF FF FF FF FF@0    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@1    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@2    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@3    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@4    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@5    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@6    -- send normal frame
+F FF FF FF FF FF FF FF FF FF FF FF@7    -- send normal frame
+F 01 FF#0   -- send abort frame
+F 01 FF#1   -- send abort frame
+F 01 FF#2   -- send abort frame
+F 01 FF#3   -- send abort frame
+F 01 FF#4   -- send abort frame
+F 01 FF#5   -- send abort frame
+F 01 FF#6   -- send abort frame
+F 01 FF#7   -- send abort frame
+-- end stimulus
